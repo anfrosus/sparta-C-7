@@ -37,7 +37,7 @@ public class JwtUtil {
     private static final long AT_EXPIRE_TIME = 30 * 60 * 1000L;
     private static final long RT_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;
 
-    Date date = new Date();
+
 
 
     /*토큰 생성*/
@@ -67,11 +67,11 @@ public class JwtUtil {
 
     /*토큰 생성*/
     public String createAccessToken(String email) {
-
+        Date date = new Date();
         //토큰 안에 들어가는 정보
          String accessToken = Jwts.builder()
                 .setSubject(email)
-                .setExpiration(new Date(date.getTime() + RT_EXPIRE_TIME))
+                .setExpiration(new Date(date.getTime() + AT_EXPIRE_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
@@ -81,10 +81,10 @@ public class JwtUtil {
     }
 
     public String createRefreshToken(String email) {
-
+        Date date = new Date();
         String refreshToken = Jwts.builder()
                 .setSubject(email)
-                .setExpiration(new Date(date.getTime() + AT_EXPIRE_TIME))
+                .setExpiration(new Date(date.getTime() + RT_EXPIRE_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
@@ -113,13 +113,17 @@ public class JwtUtil {
 
     /*refresh 토큰 검증*/
     public Boolean validateRefreshToken(String refreshToken) {
-
+        System.out.println("1차검증 전");
         // 1차 토큰 검증
         if(!validateAccessToken(refreshToken)) return false;
+        System.out.println("1차검증 성공");
+
         // DB에 저장한 토큰 비교
         Optional<RefreshToken> savedRefreshToken = refreshTokenRepository.findByEmail(getEmailFromToken(refreshToken));
 
-        return savedRefreshToken.isPresent() && refreshToken.equals(savedRefreshToken);
+        boolean a = savedRefreshToken.isPresent() && refreshToken.equals(savedRefreshToken.get().getRefreshToken());
+        System.out.println(a);
+        return a;
 
     }
 

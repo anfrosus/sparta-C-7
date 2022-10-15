@@ -30,25 +30,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //request 의 헤더를 가져와서 키값으로 accessToken 꺼내오기
+        //재발급 할 때 accessToken 이 없다면 else if 만 타게 되면서??? 아니 access 토큰 유효하지 않을 때 재발급 해줘야하는거아님?
         String accessToken = jwtUtil.getTokenFromHeader(request, "Access");
         String refreshToken = jwtUtil.getTokenFromHeader(request, "Refresh");
 
         if (accessToken != null) {
             if (!jwtUtil.validateAccessToken(accessToken)){
                 //access 토큰이 유효하지 않으면 끝
-                jwtExceptionHandler(response, "Access Token Expired", HttpStatus.BAD_REQUEST);
+                jwtExceptionHandler(response, "AccessToken 이 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
                 return;
             }
             setAuthentication(jwtUtil.getEmailFromToken(accessToken));
         }else if(refreshToken != null) {
             if (!jwtUtil.validateRefreshToken(refreshToken)){
-                //refresh 토큰이 유효하지 않으면 끝 (사실 기간 체크하고 access 재발급 해줘야 하는데?)
-                jwtExceptionHandler(response, "Refresh Token Expired", HttpStatus.BAD_REQUEST);
+                //refresh 토큰이 유효하지 않으면 끝 (사실 기간 체크하고 access 재발급 해줘야 하지 않나?) -> 검증이 완료되었다면 재발급 해 주는 api만들어서 해결?
+                jwtExceptionHandler(response, "RefreshToken 이 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
                 return;
             }
             setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
         }
-
         //다음 필터로 넘겨주기
         filterChain.doFilter(request,response);
     }
@@ -63,7 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(ResponseDto.fail(response.getStatus() + "에러", msg));
+            String json = new ObjectMapper().writeValueAsString(ResponseDto.fail(response.getStatus()+"", msg));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());
