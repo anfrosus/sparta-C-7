@@ -1,17 +1,16 @@
 package com.example.team7todo.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Pattern;
 
-@Getter @Setter
-@NoArgsConstructor
+@Getter
 public class MemberRequestDto {
 
     //Valid @Pattern()
     private String email;
+
+    private String nickname;
 
     //Valid @Pattern()
     private String password;

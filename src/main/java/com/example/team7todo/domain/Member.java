@@ -1,12 +1,17 @@
 package com.example.team7todo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.example.team7todo.dto.request.MemberRequestDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
+@Builder
 @Setter @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+
 public class Member extends TimeStamped {
 
     @Id
@@ -17,8 +22,9 @@ public class Member extends TimeStamped {
     private String email;
 
     @Column(nullable = false)
-    private String username;
+    private String nickname;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
