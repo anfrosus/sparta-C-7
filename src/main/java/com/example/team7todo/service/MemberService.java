@@ -90,16 +90,18 @@ public class MemberService {
         );
     }
 
-
-    private static void setHeader(HttpServletResponse response, TokenDto tokenDto) {
-        response.addHeader(JwtUtil.ACCESS, tokenDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH, tokenDto.getRefreshToken());
-    }
-
     public ResponseDto<?> reissue(UserDetailsImpl userDetails, HttpServletResponse response) {
         response.addHeader(JwtUtil.ACCESS, jwtUtil.createAccessToken(userDetails.getMember().getEmail()));
         return ResponseDto.success(
                 "재발급 성공"
         );
     }
+
+
+    private static void setHeader(HttpServletResponse response, TokenDto tokenDto) {
+        response.addHeader(JwtUtil.ACCESS, tokenDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH, tokenDto.getRefreshToken());
+    }
+
+
 }

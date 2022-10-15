@@ -32,7 +32,7 @@ public class MemberController {
     }
 
     //재발급 (인증은 이미 필터에서 끝났음)
-    @GetMapping("/issue")
+    @GetMapping("/reIssue")
     public ResponseDto<?> reissueToken(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
         return memberService.reissue(userDetails, response);
     }

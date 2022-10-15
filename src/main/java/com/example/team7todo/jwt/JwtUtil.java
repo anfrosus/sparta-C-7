@@ -34,7 +34,7 @@ public class JwtUtil {
 
 //    private static final String AUTHORITIES_KEY = "auth";
 //    private static final String BEARER_PREFIX = "bearer";
-    private static final long AT_EXPIRE_TIME = 30 * 60 * 1000L;
+    private static final long AT_EXPIRE_TIME = 10 * 1000L;
     private static final long RT_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;
 
 
@@ -113,10 +113,8 @@ public class JwtUtil {
 
     /*refresh 토큰 검증*/
     public Boolean validateRefreshToken(String refreshToken) {
-        System.out.println("1차검증 전");
         // 1차 토큰 검증
         if(!validateAccessToken(refreshToken)) return false;
-        System.out.println("1차검증 성공");
 
         // DB에 저장한 토큰 비교
         Optional<RefreshToken> savedRefreshToken = refreshTokenRepository.findByEmail(getEmailFromToken(refreshToken));
