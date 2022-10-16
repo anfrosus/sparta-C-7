@@ -1,6 +1,5 @@
-package com.example.team7todo.jwt;
+package com.example.team7todo.domain;
 
-import com.example.team7todo.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,16 @@ public class RefreshToken {
     private String refreshToken;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    public RefreshToken(String refreshToken, String email) {
+        this.refreshToken = refreshToken;
+        this.email = email;
+    }
+
+    public RefreshToken updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        return this;
+    }
 }

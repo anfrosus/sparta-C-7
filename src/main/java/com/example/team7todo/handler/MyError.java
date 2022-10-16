@@ -1,4 +1,4 @@
-package com.example.team7todo.dto;
+package com.example.team7todo.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyError {
-    private String status;
-    private String message;
+    private String myStatus;
+    private String myMessage;
 }
