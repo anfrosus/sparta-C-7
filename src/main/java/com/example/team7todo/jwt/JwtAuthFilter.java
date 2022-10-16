@@ -51,7 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 if (refreshToken != null) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
-                        jwtExceptionHandler(response, "Token Not Valid", HttpStatus.BAD_REQUEST);
+                        jwtExceptionHandler(response, "토큰이 유효하지 않습니다. (Token Not Valid)", HttpStatus.BAD_REQUEST);
                         return;
                     }// else 로 해도되지않나? 일단 생각해보자
                     if(!fin) {
@@ -68,7 +68,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         fin = true;
                     }
                 } else {
-                    jwtExceptionHandler(response, "No Refresh Token", HttpStatus.BAD_REQUEST);
+                    jwtExceptionHandler(response, "토큰이 존재하지 않습니다. (No Token)", HttpStatus.BAD_REQUEST);
                 }
             }
             if(!fin) setAuthentication(jwtUtil.getEmailFromToken(accessToken));

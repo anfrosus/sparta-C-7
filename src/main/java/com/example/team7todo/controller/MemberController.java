@@ -1,13 +1,14 @@
 package com.example.team7todo.controller;
 
-import com.example.team7todo.config.UserDetailsImpl;
 import com.example.team7todo.dto.request.LoginRequestDto;
 import com.example.team7todo.dto.request.MemberRequestDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/signup")
-    public ResponseDto<?> signup(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
         return memberService.createMember(memberRequestDto);
     }
 

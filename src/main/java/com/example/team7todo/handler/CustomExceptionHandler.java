@@ -1,6 +1,7 @@
 package com.example.team7todo.handler;
 
 import com.example.team7todo.dto.response.ResponseDto;
+import com.example.team7todo.handler.customexception.WrongInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
+    //벨리드의 에러
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleValidationExceptions(MethodArgumentNotValidException e) {
 
@@ -23,19 +25,25 @@ public class CustomExceptionHandler {
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             errors.add(new MyError(fieldError.getField(), fieldError.getDefaultMessage()));
         }
-
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseDto handleIllegalArgumentException(IllegalArgumentException e) {
+    public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
 
-        List<MyError> errors = new ArrayList<>();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
+    }
 
-//        for(FieldError fieldError : )
+    @ExceptionHandler(WrongInputException.class)
+    public ResponseEntity handleWrongInputException(WrongInputException e) {
 
-        return null;
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
     }
 }

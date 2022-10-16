@@ -6,6 +6,7 @@ import com.example.team7todo.dto.request.LoginRequestDto;
 import com.example.team7todo.dto.request.MemberRequestDto;
 import com.example.team7todo.dto.response.MemberResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
+import com.example.team7todo.handler.customexception.WrongInputException;
 import com.example.team7todo.jwt.JwtUtil;
 import com.example.team7todo.domain.RefreshToken;
 import com.example.team7todo.jwt.tdto.TokenDto;
@@ -56,11 +57,11 @@ public class MemberService {
     public ResponseDto<?> loginMember(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         Member member = memberRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("Not found Member")
+                () -> new WrongInputException("존재하지 않는 아이디 입니다.")
         );
         //패스워드 인코더의 매치스함수 이용해서 비밀번호 대조 (boolean 리턴)
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
-            throw new RuntimeException("Not matches Password");
+            throw new WrongInputException("비밀번호가 일치하지 않습니다.");
         }
 
         //인증 된 사람에게 토큰 발급하기
@@ -90,12 +91,15 @@ public class MemberService {
         );
     }
 
-    public ResponseDto<?> reissue(UserDetailsImpl userDetails, HttpServletResponse response) {
-        response.addHeader(JwtUtil.ACCESS, jwtUtil.createAccessToken(userDetails.getMember().getEmail()));
-        return ResponseDto.success(
-                "재발급 성공"
-        );
-    }
+    /**
+     * 자동발급으로 대체
+     * */
+//    public ResponseDto<?> reissue(UserDetailsImpl userDetails, HttpServletResponse response) {
+//        response.addHeader(JwtUtil.ACCESS, jwtUtil.createAccessToken(userDetails.getMember().getEmail()));
+//        return ResponseDto.success(
+//                "재발급 성공"
+//        );
+//    }
 
 
     private static void setHeader(HttpServletResponse response, TokenDto tokenDto) {
