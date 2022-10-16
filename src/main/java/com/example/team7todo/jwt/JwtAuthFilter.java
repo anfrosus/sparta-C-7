@@ -1,9 +1,12 @@
 package com.example.team7todo.jwt;
 
+import com.example.team7todo.domain.RefreshToken;
 import com.example.team7todo.dto.response.ResponseDto;
+import com.example.team7todo.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +16,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 
@@ -25,16 +29,19 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+
+    private final RefreshTokenRepository refreshTokenRepository;
+
     private boolean fin = false;
 
     @Override                       //서블릿에서 만들어놓은 객체들(요청을 받아올 때 미리 response 객체 생성함)
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+
         //request 의 헤더를 가져와서 키값으로 accessToken 꺼내오기
         //재발급 할 때 accessToken 이 없다면 else if 만 타게 되면서??? 아니 access 토큰 유효하지 않을 때 재발급 해줘야하는거아님?
         String accessToken = jwtUtil.getTokenFromHeader(request, "Access");
         String refreshToken = jwtUtil.getTokenFromHeader(request, "Refresh");
-        System.out.println("안녕");
 
         //엑세스 토큰 가지고 있다면
         if (accessToken != null) {
@@ -44,16 +51,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 if (refreshToken != null) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
-                        jwtExceptionHandler(response, "Token 이 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+                        jwtExceptionHandler(response, "Token Not Valid", HttpStatus.BAD_REQUEST);
                         return;
-                    }
+                    }// else 로 해도되지않나? 일단 생각해보자
                     if(!fin) {
+                        //리프레쉬 토큰이 유효하다면
+
+                        //리프레쉬 토큰 폐기 및 재발급 (db에 있는 refreshtoken 교체하기)
+                        String email = jwtUtil.getEmailFromToken(refreshToken);
+                        String newRefreshToken = replaceRefreshToken(email);
+
                         response.addHeader(JwtUtil.ACCESS, jwtUtil.createAccessToken(jwtUtil.getEmailFromToken(refreshToken)));
+                        response.addHeader(JwtUtil.REFRESH, newRefreshToken);
                         setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
+
                         fin = true;
                     }
                 } else {
-                    jwtExceptionHandler(response, "리프레쉬 토큰이 필요합니다.", HttpStatus.BAD_REQUEST);
+                    jwtExceptionHandler(response, "No Refresh Token", HttpStatus.BAD_REQUEST);
                 }
             }
             if(!fin) setAuthentication(jwtUtil.getEmailFromToken(accessToken));
@@ -72,10 +87,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    @Transactional
+    public String replaceRefreshToken(String email) {
+        String newRefreshToken = jwtUtil.createRefreshToken(email);
+        RefreshToken oldRefreshToken = refreshTokenRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("토큰 폐기 중 해당회원 못찾음"));
+        refreshTokenRepository.save(oldRefreshToken.updateRefreshToken(newRefreshToken));
+        return newRefreshToken;
+    }
+
     public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
         response.setStatus(status.value());
         response.setContentType("application/json");
         try {
+            //responseDto 에 넣어서 보내기
             String json = new ObjectMapper().writeValueAsString(ResponseDto.fail(response.getStatus() + "", msg));
             response.getWriter().write(json);
         } catch (Exception e) {

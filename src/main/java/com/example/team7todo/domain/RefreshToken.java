@@ -1,6 +1,5 @@
-package com.example.team7todo.jwt;
+package com.example.team7todo.domain;
 
-import com.example.team7todo.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

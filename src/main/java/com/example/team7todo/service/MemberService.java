@@ -7,7 +7,7 @@ import com.example.team7todo.dto.request.MemberRequestDto;
 import com.example.team7todo.dto.response.MemberResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.jwt.JwtUtil;
-import com.example.team7todo.jwt.RefreshToken;
+import com.example.team7todo.domain.RefreshToken;
 import com.example.team7todo.jwt.tdto.TokenDto;
 import com.example.team7todo.repository.MemberRepository;
 import com.example.team7todo.repository.RefreshTokenRepository;

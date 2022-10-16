@@ -1,6 +1,6 @@
 package com.example.team7todo.repository;
 
-import com.example.team7todo.jwt.RefreshToken;
+import com.example.team7todo.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
