@@ -10,8 +10,9 @@ import com.example.team7todo.model.Post;
 import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     //게시글 조회
     public ResponseDto getPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
@@ -31,7 +32,7 @@ public class PostService {
     }
 
     //게시글 전체 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseDto getPosts() {
         List<Post> allPosts = postRepository.findAll();
         List<PostResponseDto> listAll = new ArrayList<>();
@@ -53,6 +54,7 @@ public class PostService {
     //게시글 수정
     @Transactional
     public ResponseDto updatePost(Long id, PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+
         if (id == userDetails.getMember().getId()) {
             Post post = postRepository.findById(id).orElseThrow(
                     () -> new DataNotFoundException("게시글 수정", "해당 데이터가 존재하지 않습니다.")

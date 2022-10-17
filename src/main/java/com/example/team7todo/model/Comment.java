@@ -1,6 +1,6 @@
 package com.example.team7todo.model;
 
-import com.example.team7todo.dto.CommentRequestDto;
+import com.example.team7todo.dto.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

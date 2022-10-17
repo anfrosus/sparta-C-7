@@ -19,11 +19,6 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
-    @GetMapping("/test")
-    public void a () {
-        System.out.println("도착");
-    }
-
     @GetMapping("/mypost")
     public ResponseDto getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return myPageService.getMyPosts(userDetails);

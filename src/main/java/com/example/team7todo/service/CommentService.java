@@ -1,9 +1,8 @@
 package com.example.team7todo.service;
 
 import com.example.team7todo.config.UserDetailsImpl;
-import com.example.team7todo.dto.CommentRequestDto;
+import com.example.team7todo.dto.request.CommentRequestDto;
 import com.example.team7todo.dto.response.CommentResponseDto;
-import com.example.team7todo.dto.response.PostResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.NotAuthorException;

@@ -11,10 +11,12 @@ import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.LikeRepository;
 import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class MyPageService {
     private final LikeRepository likeRepository;
 
     //내가 쓴 글 조회하기
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseDto getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<Post> posts = postRepository.findAllByMemberEmail(userDetails.getMember().getEmail());
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
@@ -38,7 +40,7 @@ public class MyPageService {
     }
 
     //내 댓글 조회하기
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseDto getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<Comment> comments = commentRepository.findAllByMemberEmail(userDetails.getMember().getEmail());
         List<MyCommentResponseDto> myCommentResponseDtoList = new ArrayList<>();
@@ -49,7 +51,7 @@ public class MyPageService {
     }
 
     //내가 좋아요 한 글 조회하기
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseDto getMyLikePosts(UserDetailsImpl userDetails) {
         List<Like> likes = likeRepository.findLikesByMemberEmail(userDetails.getMember().getEmail());
         List<Post> postsOfLike = new ArrayList<>();

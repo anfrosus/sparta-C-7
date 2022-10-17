@@ -14,9 +14,9 @@ import com.example.team7todo.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
