@@ -1,4 +1,4 @@
-package com.example.team7todo.domain;
+package com.example.team7todo.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

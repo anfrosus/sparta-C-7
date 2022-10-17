@@ -1,8 +1,7 @@
 package com.example.team7todo.config;
 
-import com.example.team7todo.domain.Member;
+import com.example.team7todo.model.Member;
 import com.example.team7todo.repository.MemberRepository;
-import com.example.team7todo.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

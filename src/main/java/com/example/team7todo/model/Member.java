@@ -1,6 +1,5 @@
-package com.example.team7todo.domain;
+package com.example.team7todo.model;
 
-import com.example.team7todo.dto.request.MemberRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class Member extends TimeStamped {
 
     @Id
@@ -27,5 +25,6 @@ public class Member extends TimeStamped {
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+
 
 }

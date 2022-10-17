@@ -1,12 +1,11 @@
 package com.example.team7todo.jwt;
 
-import com.example.team7todo.domain.RefreshToken;
+import com.example.team7todo.model.RefreshToken;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

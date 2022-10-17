@@ -1,13 +1,11 @@
 package com.example.team7todo.handler;
 
-import com.example.team7todo.dto.response.ResponseDto;
-import com.example.team7todo.handler.customexception.WrongInputException;
+import com.example.team7todo.handler.customexception.LoginException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
@@ -38,12 +36,12 @@ public class CustomExceptionHandler {
                 .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
     }
 
-    @ExceptionHandler(WrongInputException.class)
-    public ResponseEntity handleWrongInputException(WrongInputException e) {
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity handleWrongInputException(LoginException e) {
 
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
     }
 }
