@@ -33,12 +33,12 @@ public class PostController {
         return postService.createPost(postRequestDto, userDetails);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseDto updatePost(@PathVariable Long id, @RequestBody @Valid PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePost(id, postRequestDto, userDetails);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails);
     }

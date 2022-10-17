@@ -1,6 +1,7 @@
 package com.example.team7todo.handler;
 
 import com.example.team7todo.handler.customexception.LoginException;
+import com.example.team7todo.handler.customexception.NotAuthorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -39,6 +40,14 @@ public class CustomExceptionHandler {
     @ExceptionHandler(LoginException.class)
     public ResponseEntity handleWrongInputException(LoginException e) {
 
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(NotAuthorException.class)
+    public ResponseEntity handleNotAuthorException(NotAuthorException e) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

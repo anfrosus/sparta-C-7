@@ -35,7 +35,7 @@ public class CommentService {
     @Transactional
     public ResponseDto updateComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
 
-        Comment comment = commentRepository.findCommentByPostIdaAndMemberId(postId, userDetails.getMember().getId())
+        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, userDetails.getMember().getId())
                 .orElseThrow(() -> new DataNotFoundException("댓글 수정", "조건에 해당하는 댓글을 찾을 수 없습니다."));
 
         if (comment.getMember().getEmail() == userDetails.getMember().getEmail()) {
@@ -49,7 +49,7 @@ public class CommentService {
     //댓글 삭제
     @Transactional
     public ResponseDto deleteComment(Long postId, UserDetailsImpl userDetails) {
-        Comment comment = commentRepository.findCommentByPostIdaAndMemberId(postId, userDetails.getMember().getId())
+        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, userDetails.getMember().getId())
                 .orElseThrow(() -> new DataNotFoundException("댓글 삭제", "조건에 해당하는 댓글을 찾을 수 없습니다."));
 
         if (comment.getMember().getId() == userDetails.getMember().getId()) {

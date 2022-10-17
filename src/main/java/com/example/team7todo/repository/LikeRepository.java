@@ -1,6 +1,5 @@
 package com.example.team7todo.repository;
 
-import com.example.team7todo.model.Comment;
 import com.example.team7todo.model.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 

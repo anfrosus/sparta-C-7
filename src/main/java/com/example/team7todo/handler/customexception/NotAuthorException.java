@@ -1,5 +1,8 @@
 package com.example.team7todo.handler.customexception;
 
+import lombok.Getter;
+
+@Getter
 public class NotAuthorException extends RuntimeException{
     private String field;
 

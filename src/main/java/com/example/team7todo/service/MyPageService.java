@@ -11,11 +11,9 @@ import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.LikeRepository;
 import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.ArrayList;
 import java.util.List;
