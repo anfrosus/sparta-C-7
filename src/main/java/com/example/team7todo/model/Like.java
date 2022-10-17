@@ -28,4 +28,10 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "postId1", nullable = false)
     private Post post;
+
+    public Like(boolean isLike, Member member, Post post) {
+        this.isLike = isLike;
+        this.member = member;
+        this.post = post;
+    }
 }
