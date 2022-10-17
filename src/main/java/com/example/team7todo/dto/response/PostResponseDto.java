@@ -10,17 +10,19 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private String title;
     private String author;
-    private Integer sizeOfLikes;
-    private Integer sizeOfComments;
+    private String content;
+    private Integer commentsCount;
+    private Integer likesCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostResponseDto(Post post) {
+    public PostResponseDto(Post post, Integer commentsCount, Integer likesCount) {
         this.title = post.getTitle();
         this.author = post.getMember().getEmail();
-        this.sizeOfLikes = post.getLikes() == null ? 0 : post.getLikes().size();
-        this.sizeOfComments = post.getComments() == null ? 0 : post.getComments().size();
+        this.commentsCount = commentsCount;
+        this.likesCount = likesCount;
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+        this.content = post.getContent();
     }
 }

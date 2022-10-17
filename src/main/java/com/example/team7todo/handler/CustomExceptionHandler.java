@@ -1,5 +1,6 @@
 package com.example.team7todo.handler;
 
+import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.LoginException;
 import com.example.team7todo.handler.customexception.NotAuthorException;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,14 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(NotAuthorException.class)
     public ResponseEntity handleNotAuthorException(NotAuthorException e) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity handleDataNotFoundException(DataNotFoundException e) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

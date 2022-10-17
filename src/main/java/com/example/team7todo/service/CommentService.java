@@ -25,7 +25,7 @@ public class CommentService {
     //댓글 작성
     @Transactional
     public ResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("댓글작성", "존재하지 않는 회원입니다."));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("댓글작성", "존재하지 게시글 입니다."));
         Comment comment = new Comment(commentRequestDto, post, userDetails.getMember());
         commentRepository.save(comment);
         return ResponseDto.success(new CommentResponseDto(comment));

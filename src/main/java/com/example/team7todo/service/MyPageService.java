@@ -29,10 +29,10 @@ public class MyPageService {
     //내가 쓴 글 조회하기
     @Transactional(readOnly = true)
     public ResponseDto getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByMemberEmail(userDetails.getMember().getEmail());
+        List<Post> posts = postRepository.findAllByMember(userDetails.getMember());
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
         for (Post post : posts) {
-            postResponseDtoList.add(new PostResponseDto(post));
+            postResponseDtoList.add(new PostResponseDto(post, commentRepository.countByPost(post), likeRepository.countByPost(post)));
         }
         return ResponseDto.success(postResponseDtoList);
     }
@@ -40,7 +40,7 @@ public class MyPageService {
     //내 댓글 조회하기
     @Transactional(readOnly = true)
     public ResponseDto getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Comment> comments = commentRepository.findAllByMemberEmail(userDetails.getMember().getEmail());
+        List<Comment> comments = commentRepository.findAllByMember(userDetails.getMember());
         List<MyCommentResponseDto> myCommentResponseDtoList = new ArrayList<>();
         for (Comment comment : comments) {
             myCommentResponseDtoList.add(new MyCommentResponseDto(comment));
@@ -59,7 +59,7 @@ public class MyPageService {
             postsOfLike.add(like.getPost());
         }
         for (Post post : postsOfLike) {
-            responseDtos.add(new PostResponseDto(post));
+            responseDtos.add(new PostResponseDto(post, commentRepository.countByPost(post), likeRepository.countByPost(post)));
         }
         return ResponseDto.success(responseDtos);
     }
