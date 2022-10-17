@@ -11,7 +11,4 @@ public class LoginException extends RuntimeException{
         super(message);
         this.field = field;
     }
-
-
-
 }

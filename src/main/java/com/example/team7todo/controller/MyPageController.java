@@ -19,7 +19,7 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
-    @GetMapping("api/test")
+    @GetMapping("/test")
     public void a () {
         System.out.println("도착");
     }

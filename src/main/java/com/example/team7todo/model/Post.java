@@ -1,5 +1,7 @@
 package com.example.team7todo.model;
 
+import com.example.team7todo.config.UserDetailsImpl;
+import com.example.team7todo.dto.request.PostRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +35,18 @@ public class Post extends TimeStamped{
 
     @OneToMany
     private List<Like> likes;
+
+    public Post(PostRequestDto postRequestDto, Member member) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.member = member;
+    }
+
+
+    public void update(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+    }
+
 
 }

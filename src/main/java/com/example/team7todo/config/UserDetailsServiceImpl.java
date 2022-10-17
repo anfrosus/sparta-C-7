@@ -15,6 +15,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+
+    //로드바이 유저네임이 생성되는 시점 -> 토큰검증 직후인듯
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email).orElseThrow(

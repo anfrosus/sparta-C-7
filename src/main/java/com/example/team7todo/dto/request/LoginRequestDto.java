@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 public class LoginRequestDto {
 
     @NotBlank(message = "아이디를 입력해 주세요")
-    String email;
+    private String email;
 
     @NotBlank(message = "패스워드를 입력해 주세요")
-    String password;
+    private String password;
 }

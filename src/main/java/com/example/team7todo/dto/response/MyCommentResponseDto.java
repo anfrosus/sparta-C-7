@@ -3,8 +3,8 @@ package com.example.team7todo.dto.response;
 import com.example.team7todo.model.Comment;
 
 public class MyCommentResponseDto {
-    String postTitle;
-    String comment;
+    private String postTitle;
+    private String comment;
 
     public MyCommentResponseDto(Comment comment) {
         this.postTitle = comment.getPost().getTitle();
