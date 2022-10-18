@@ -1,5 +1,7 @@
 package com.example.team7todo.config;
 
+import com.example.team7todo.handler.AccessDeniedHandlerException;
+import com.example.team7todo.handler.AuthenticationEntryPointException;
 import com.example.team7todo.jwt.JwtAuthFilter;
 import com.example.team7todo.jwt.JwtUtil;
 import com.example.team7todo.repository.RefreshTokenRepository;
@@ -24,6 +26,10 @@ public class WebSecurityConfig {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
+
+    private final AuthenticationEntryPointException authenticationEntryPointException;
+    private final AccessDeniedHandlerException accessDeniedHandlerException;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,6 +44,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors();
         http.csrf().disable();
+
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointException)
+                .accessDeniedHandler(accessDeniedHandlerException);
 
         //세션 사용 X
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
