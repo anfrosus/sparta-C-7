@@ -7,6 +7,7 @@ import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.NotAuthorException;
 import com.example.team7todo.model.Comment;
+import com.example.team7todo.model.Member;
 import com.example.team7todo.model.Post;
 import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.LikeRepository;
@@ -51,8 +52,8 @@ public class PostService {
 
     //게시글 작성
     @Transactional
-    public ResponseDto createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
-        Post post = new Post(postRequestDto, userDetails.getMember());
+    public ResponseDto createPost(PostRequestDto postRequestDto, Member currentMember) {
+        Post post = new Post(postRequestDto, currentMember);
         postRepository.save(post);
         return ResponseDto.success(new PostResponseDto(post));
     }
@@ -60,12 +61,12 @@ public class PostService {
 
     //게시글 수정
     @Transactional
-    public ResponseDto updatePost(Long id, PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
-
-        if (id == userDetails.getMember().getId()) {
-            Post post = postRepository.findById(id).orElseThrow(
-                    () -> new DataNotFoundException("게시글 수정", "해당 데이터가 존재하지 않습니다.")
-            );
+    public ResponseDto updatePost(Long postId, PostRequestDto postRequestDto, Long currentMemberId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new DataNotFoundException("게시글 수정", "해당 게시글이 존재하지 않습니다.")
+        );
+        //글의 아이디가 아니라 작성자의 아이디 가져와야지
+        if (post.getMember().getId() == currentMemberId) {
             post.update(postRequestDto);
             return ResponseDto.success(new PostResponseDto(post));
         } else {
@@ -75,9 +76,10 @@ public class PostService {
 
     //게시글 삭제
     @Transactional
-    public ResponseDto deletePost(Long id, UserDetailsImpl userDetails) {
+    public ResponseDto deletePost(Long id, Long currentMemberId) {
         Post post = postRepository.findById(id).orElseThrow(() -> new DataNotFoundException("게시글 삭제", "해당 게시글이 존재하지 않습니다."));
-        if (post.getMember().getId() == userDetails.getMember().getId()) {
+
+        if (post.getMember().getId() == currentMemberId) {
             postRepository.deleteById(id);
             return ResponseDto.success(id + "게시글 삭제 완료");
         } else {

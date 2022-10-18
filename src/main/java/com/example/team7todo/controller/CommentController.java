@@ -20,18 +20,18 @@ public class CommentController {
     //댓글 작성
     @PostMapping("/{postId}/comment")
     public ResponseDto createComment(@PathVariable Long postId, @RequestBody @Valid CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.createComment(postId, commentRequestDto, userDetails);
+        return commentService.createComment(postId, commentRequestDto, userDetails.getMember());
     }
 
     //댓글 수정
     @PutMapping("/{postId}/comment")
     public ResponseDto updateComment(@PathVariable Long postId, @RequestBody @Valid CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.updateComment(postId, commentRequestDto, userDetails);
+        return commentService.updateComment(postId, commentRequestDto, userDetails.getMember());
     }
 
     //댓글 삭제
     @DeleteMapping("/{postId}/comment")
     public ResponseDto deleteComment(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.deleteComment(postId, userDetails);
+        return commentService.deleteComment(postId, userDetails.getMember().getId());
     }
 }

@@ -6,7 +6,6 @@ import com.example.team7todo.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -31,7 +30,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer ignoringCustomzier() {
+    public WebSecurityCustomizer ignoringCustomizer() {
         return (web) -> web.ignoring().antMatchers("/h2-console/**");
     }
 

@@ -7,6 +7,7 @@ import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.NotAuthorException;
 import com.example.team7todo.model.Comment;
+import com.example.team7todo.model.Member;
 import com.example.team7todo.model.Post;
 import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.PostRepository;
@@ -24,21 +25,21 @@ public class CommentService {
 
     //댓글 작성
     @Transactional
-    public ResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+    public ResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, Member currentMember) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("댓글작성", "존재하지 게시글 입니다."));
-        Comment comment = new Comment(commentRequestDto, post, userDetails.getMember());
+        Comment comment = new Comment(commentRequestDto, post, currentMember);
         commentRepository.save(comment);
         return ResponseDto.success(new CommentResponseDto(comment));
     }
 
     //댓글 수정
     @Transactional
-    public ResponseDto updateComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+    public ResponseDto updateComment(Long postId, CommentRequestDto commentRequestDto, Member currentMember) {
 
-        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, userDetails.getMember().getId())
+        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, currentMember.getId())
                 .orElseThrow(() -> new DataNotFoundException("댓글 수정", "조건에 해당하는 댓글을 찾을 수 없습니다."));
 
-        if (comment.getMember().getEmail() == userDetails.getMember().getEmail()) {
+        if (comment.getMember().getEmail() == currentMember.getEmail()) {
             comment.update(commentRequestDto);
             return ResponseDto.success(new CommentResponseDto(comment));
         }else {
@@ -48,11 +49,11 @@ public class CommentService {
 
     //댓글 삭제
     @Transactional
-    public ResponseDto deleteComment(Long postId, UserDetailsImpl userDetails) {
-        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, userDetails.getMember().getId())
+    public ResponseDto deleteComment(Long postId, Long currentMemberId) {
+        Comment comment = commentRepository.findCommentByPostIdAndMemberId(postId, currentMemberId)
                 .orElseThrow(() -> new DataNotFoundException("댓글 삭제", "조건에 해당하는 댓글을 찾을 수 없습니다."));
 
-        if (comment.getMember().getId() == userDetails.getMember().getId()) {
+        if (comment.getMember().getId() == currentMemberId) {
             commentRepository.deleteById(comment.getId());
             return ResponseDto.success("댓글 삭제 완료");
         }else {

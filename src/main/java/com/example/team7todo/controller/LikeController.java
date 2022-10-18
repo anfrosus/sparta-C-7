@@ -19,6 +19,6 @@ public class LikeController {
     //몇번글인지, 누구인지
     @GetMapping("/{postId}/like")
     public ResponseDto doLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return likeService.doLike(postId, userDetails);
+        return likeService.doLike(postId, userDetails.getMember());
     }
 }

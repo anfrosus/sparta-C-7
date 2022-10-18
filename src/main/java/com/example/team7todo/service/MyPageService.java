@@ -6,6 +6,7 @@ import com.example.team7todo.dto.response.PostResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.model.Comment;
 import com.example.team7todo.model.Like;
+import com.example.team7todo.model.Member;
 import com.example.team7todo.model.Post;
 import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.LikeRepository;
@@ -28,11 +29,10 @@ public class MyPageService {
 
     //내가 쓴 글 조회하기
     @Transactional(readOnly = true)
-    public ResponseDto getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByMember(userDetails.getMember());
+    public ResponseDto getMyPosts(Member currentMember) {
+        List<Post> posts = postRepository.findAllByMember(currentMember);
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
         for (Post post : posts) {
-            System.out.println(post.getComments().size());
             postResponseDtoList.add(new PostResponseDto(post));
         }
         return ResponseDto.success(postResponseDtoList);
@@ -40,8 +40,8 @@ public class MyPageService {
 
     //내 댓글 조회하기
     @Transactional(readOnly = true)
-    public ResponseDto getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Comment> comments = commentRepository.findAllByMember(userDetails.getMember());
+    public ResponseDto getMyComments(Member currentMember) {
+        List<Comment> comments = commentRepository.findAllByMember(currentMember);
         List<MyCommentResponseDto> myCommentResponseDtoList = new ArrayList<>();
         for (Comment comment : comments) {
             myCommentResponseDtoList.add(new MyCommentResponseDto(comment));
@@ -51,8 +51,9 @@ public class MyPageService {
 
     //내가 좋아요 한 글 조회하기
     @Transactional(readOnly = true)
-    public ResponseDto getMyLikePosts(UserDetailsImpl userDetails) {
-        List<Like> likes = likeRepository.findLikesByMemberEmail(userDetails.getMember().getEmail());
+    public ResponseDto getMyLikePosts(Long currentMemberId) {
+        List<Like> likes = likeRepository.findLikesByMemberId(currentMemberId);
+        System.out.println(likes.get(0));
         List<Post> postsOfLike = new ArrayList<>();
         List<PostResponseDto> responseDtos = new ArrayList<>();
 

@@ -29,7 +29,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseDto<?> createMember(MemberRequestDto memberRequestDto) {
+    public ResponseDto createMember(MemberRequestDto memberRequestDto) {
         // 검증 로직 및 예외처리 작성
         //저장
         Member member = Member.builder()

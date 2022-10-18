@@ -19,16 +19,16 @@ public class MyPageController {
 
     @GetMapping("/mypost")
     public ResponseDto getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myPageService.getMyPosts(userDetails);
+        return myPageService.getMyPosts(userDetails.getMember());
     }
 
     @GetMapping("/mycomment")
     public ResponseDto getMyComments(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myPageService.getMyComments(userDetails);
+        return myPageService.getMyComments(userDetails.getMember());
     }
 
     @GetMapping("/mylike")
     public ResponseDto getMyPostsOfLike(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myPageService.getMyLikePosts(userDetails);
+        return myPageService.getMyLikePosts(userDetails.getMember().getId());
     }
 }
