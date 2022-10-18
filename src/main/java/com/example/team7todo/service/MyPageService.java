@@ -53,7 +53,6 @@ public class MyPageService {
     @Transactional(readOnly = true)
     public ResponseDto getMyLikePosts(Long currentMemberId) {
         List<Like> likes = likeRepository.findLikesByMemberId(currentMemberId);
-        System.out.println(likes.get(0));
         List<Post> postsOfLike = new ArrayList<>();
         List<PostResponseDto> responseDtos = new ArrayList<>();
 
