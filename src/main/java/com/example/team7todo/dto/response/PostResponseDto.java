@@ -16,11 +16,11 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostResponseDto(Post post, Integer commentsCount, Integer likesCount) {
+    public PostResponseDto(Post post) {
         this.title = post.getTitle();
         this.author = post.getMember().getEmail();
-        this.commentsCount = commentsCount;
-        this.likesCount = likesCount;
+        this.commentsCount = post.getComments() == null ? 0 : post.getComments().size();
+        this.likesCount = post.getComments() == null ? 0 : post.getLikes().size();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.content = post.getContent();

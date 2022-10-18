@@ -46,11 +46,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (accessToken != null) {
 
             if (!jwtUtil.validateAccessToken(accessToken)) {
+                jwtExceptionHandler(response, "accessToken 이 유효하지 않습니다. (accessToken Not Valid)", HttpStatus.BAD_REQUEST);
                 //access 토큰이 유효하지 않은데 리프레시 토큰이 없다면?
                 if (refreshToken != null) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
-                        jwtExceptionHandler(response, "토큰이 유효하지 않습니다. (Token Not Valid)", HttpStatus.BAD_REQUEST);
+                        jwtExceptionHandler(response, "refreshToken 이 유효하지 않습니다. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);
                         return;
                     }// else 로 해도되지않나? 일단 생각해보자
                     if(!fin) {

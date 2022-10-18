@@ -22,11 +22,11 @@ public class Like {
     private boolean isLike;
 
     @ManyToOne
-    @JoinColumn(name = "memberId1", nullable = false)
+    @JoinColumn(nullable = false)
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "postId1", nullable = false)
+    @JoinColumn(nullable = false)
     private Post post;
 
     public Like(boolean isLike, Member member, Post post) {

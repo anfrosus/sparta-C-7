@@ -32,7 +32,8 @@ public class MyPageService {
         List<Post> posts = postRepository.findAllByMember(userDetails.getMember());
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
         for (Post post : posts) {
-            postResponseDtoList.add(new PostResponseDto(post, commentRepository.countByPost(post), likeRepository.countByPost(post)));
+            System.out.println(post.getComments().size());
+            postResponseDtoList.add(new PostResponseDto(post));
         }
         return ResponseDto.success(postResponseDtoList);
     }
@@ -59,7 +60,7 @@ public class MyPageService {
             postsOfLike.add(like.getPost());
         }
         for (Post post : postsOfLike) {
-            responseDtos.add(new PostResponseDto(post, commentRepository.countByPost(post), likeRepository.countByPost(post)));
+            responseDtos.add(new PostResponseDto(post));
         }
         return ResponseDto.success(responseDtos);
     }
