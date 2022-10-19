@@ -1,13 +1,13 @@
 package com.example.team7todo.handler;
 
-import com.example.team7todo.dto.response.ResponseDto;
-import com.example.team7todo.handler.customexception.WrongInputException;
+import com.example.team7todo.handler.customexception.DataNotFoundException;
+import com.example.team7todo.handler.customexception.LoginException;
+import com.example.team7todo.handler.customexception.NotAuthorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class CustomExceptionHandler {
                 .body(errors);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
 
         return ResponseEntity
@@ -38,12 +38,28 @@ public class CustomExceptionHandler {
                 .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
     }
 
-    @ExceptionHandler(WrongInputException.class)
-    public ResponseEntity handleWrongInputException(WrongInputException e) {
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity handleWrongInputException(LoginException e) {
 
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new MyError(HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getLocalizedMessage()));
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(NotAuthorException.class)
+    public ResponseEntity handleNotAuthorException(NotAuthorException e) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity handleDataNotFoundException(DataNotFoundException e) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MyError(e.getField(), e.getLocalizedMessage()));
     }
 }

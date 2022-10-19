@@ -2,7 +2,7 @@ package com.example.team7todo.jwt;
 
 
 import com.example.team7todo.config.UserDetailsServiceImpl;
-import com.example.team7todo.domain.RefreshToken;
+import com.example.team7todo.model.RefreshToken;
 import com.example.team7todo.jwt.tdto.TokenDto;
 import com.example.team7todo.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
@@ -35,7 +35,7 @@ public class JwtUtil {
 
 //    private static final String AUTHORITIES_KEY = "auth";
 //    private static final String BEARER_PREFIX = "bearer";
-    private static final long AT_EXPIRE_TIME = 10 * 1000L; //2 * 60 * 60 * 1000L
+    private static final long AT_EXPIRE_TIME = 2 * 60 * 60 * 1000L;
     private static final long RT_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;
 
 

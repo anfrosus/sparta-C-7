@@ -1,23 +1,22 @@
 package com.example.team7todo.service;
 
-import com.example.team7todo.config.UserDetailsImpl;
-import com.example.team7todo.domain.Member;
+import com.example.team7todo.model.Member;
 import com.example.team7todo.dto.request.LoginRequestDto;
 import com.example.team7todo.dto.request.MemberRequestDto;
 import com.example.team7todo.dto.response.MemberResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
-import com.example.team7todo.handler.customexception.WrongInputException;
+import com.example.team7todo.handler.customexception.LoginException;
 import com.example.team7todo.jwt.JwtUtil;
-import com.example.team7todo.domain.RefreshToken;
+import com.example.team7todo.model.RefreshToken;
 import com.example.team7todo.jwt.tdto.TokenDto;
 import com.example.team7todo.repository.MemberRepository;
 import com.example.team7todo.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -30,7 +29,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseDto<?> createMember(MemberRequestDto memberRequestDto) {
+    public ResponseDto createMember(MemberRequestDto memberRequestDto) {
         // 검증 로직 및 예외처리 작성
         //저장
         Member member = Member.builder()
@@ -57,11 +56,11 @@ public class MemberService {
     public ResponseDto<?> loginMember(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         Member member = memberRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(
-                () -> new WrongInputException("존재하지 않는 아이디 입니다.")
+                () -> new LoginException("login_ID", "존재하지 않는 아이디 입니다.")
         );
         //패스워드 인코더의 매치스함수 이용해서 비밀번호 대조 (boolean 리턴)
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
-            throw new WrongInputException("비밀번호가 일치하지 않습니다.");
+            throw new LoginException("login_PW","비밀번호가 일치하지 않습니다.");
         }
 
         //인증 된 사람에게 토큰 발급하기

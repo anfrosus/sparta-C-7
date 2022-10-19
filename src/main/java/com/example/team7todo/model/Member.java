@@ -1,17 +1,16 @@
-package com.example.team7todo.domain;
+package com.example.team7todo.model;
 
-import com.example.team7todo.dto.request.MemberRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class Member extends TimeStamped {
 
     @Id
@@ -28,4 +27,12 @@ public class Member extends TimeStamped {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "member")
+    private List<Like> likes;
 }

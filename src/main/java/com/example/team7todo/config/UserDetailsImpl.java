@@ -1,6 +1,6 @@
 package com.example.team7todo.config;
 
-import com.example.team7todo.domain.Member;
+import com.example.team7todo.model.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
