@@ -29,6 +29,6 @@ public class MyPageController {
 
     @GetMapping("/mylike")
     public ResponseDto getMyPostsOfLike(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return myPageService.getMyLikePosts(userDetails.getMember().getId());
+        return myPageService.getMyLikePosts(userDetails.getMember());
     }
 }

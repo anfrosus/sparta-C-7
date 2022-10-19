@@ -13,6 +13,7 @@ import com.example.team7todo.repository.CommentRepository;
 import com.example.team7todo.repository.LikeRepository;
 import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,6 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundException("게시글 조회", "해당 데이터가 존재하지 않습니다.")
         );
-
         return ResponseDto.success(new PostResponseDto(post));
     }
 

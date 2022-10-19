@@ -30,10 +30,10 @@ public class Post extends TimeStamped{
     @ManyToOne
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Like> likes;
 
     public Post(PostRequestDto postRequestDto, Member member) {

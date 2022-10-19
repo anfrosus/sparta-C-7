@@ -20,7 +20,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.author = post.getMember().getEmail();
         this.commentsCount = post.getComments() == null ? 0 : post.getComments().size();
-        this.likesCount = post.getComments() == null ? 0 : post.getLikes().size();
+        this.likesCount = post.getLikes() == null ? 0 : post.getLikes().size();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.content = post.getContent();

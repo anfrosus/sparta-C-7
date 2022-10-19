@@ -30,7 +30,7 @@ public class CustomExceptionHandler {
                 .body(errors);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
 
         return ResponseEntity
