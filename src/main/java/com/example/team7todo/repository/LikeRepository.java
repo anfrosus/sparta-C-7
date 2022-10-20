@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
     boolean existsByPostIdAndMemberId(Long postId, Long memberId);
-    Integer countByPost(Post post);
+
 }

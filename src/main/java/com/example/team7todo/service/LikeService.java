@@ -1,6 +1,5 @@
 package com.example.team7todo.service;
 
-import com.example.team7todo.config.UserDetailsImpl;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.NotAuthorException;
@@ -12,8 +11,6 @@ import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
