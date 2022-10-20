@@ -1,23 +1,18 @@
 package com.example.team7todo.service;
 
-import com.example.team7todo.config.UserDetailsImpl;
 import com.example.team7todo.dto.request.PostRequestDto;
 import com.example.team7todo.dto.response.PostResponseDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.handler.customexception.DataNotFoundException;
 import com.example.team7todo.handler.customexception.NotAuthorException;
-import com.example.team7todo.model.Comment;
 import com.example.team7todo.model.Member;
 import com.example.team7todo.model.Post;
-import com.example.team7todo.repository.CommentRepository;
-import com.example.team7todo.repository.LikeRepository;
 import com.example.team7todo.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +21,7 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final EntityManager em;
 
 
 
@@ -65,8 +61,8 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new DataNotFoundException("게시글 수정", "해당 게시글이 존재하지 않습니다.")
         );
-        //글의 아이디가 아니라 작성자의 아이디 가져와야지
-        if (post.getMember().getId() == currentMemberId) {
+        //작성자의 아이디 가져와야지
+        if (post.getMember().getId().equals(currentMemberId)) {
             post.update(postRequestDto);
             return ResponseDto.success(new PostResponseDto(post));
         } else {
@@ -79,7 +75,7 @@ public class PostService {
     public ResponseDto deletePost(Long id, Long currentMemberId) {
         Post post = postRepository.findById(id).orElseThrow(() -> new DataNotFoundException("게시글 삭제", "해당 게시글이 존재하지 않습니다."));
 
-        if (post.getMember().getId() == currentMemberId) {
+        if (post.getMember().getId().equals(currentMemberId)) {
             postRepository.deleteById(id);
             return ResponseDto.success(id + "게시글 삭제 완료");
         } else {
