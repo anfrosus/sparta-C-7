@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Base64;
@@ -104,6 +105,8 @@ public class JwtUtil {
             log.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
+            // 이 때만 재발급 해줘야 겠네 !
+            // boolean말고 숫자로 -> 앞단에서
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {

@@ -1,5 +1,6 @@
 package com.example.team7todo.jwt;
 
+import com.example.team7todo.handler.AuthenticationEntryPointException;
 import com.example.team7todo.model.RefreshToken;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.repository.RefreshTokenRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -46,13 +48,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (accessToken != null) {
 
             if (!jwtUtil.validateAccessToken(accessToken)) {
-                jwtExceptionHandler(response, "accessToken 이 유효하지 않습니다. (accessToken Not Valid)", HttpStatus.BAD_REQUEST);
+                //규범님 방식 -> 숫자로 리턴받아서 나누어 처리하는 방법도 있음
                 //access 토큰이 유효하지 않은데 리프레시 토큰이 없다면?
+//                jwtExceptionHandler(response, "accessToken 이 유효하지 않습니다. (accessToken Not Valid)", HttpStatus.BAD_REQUEST); -> 어차피 아래 else에 걸린다.
+
                 if (refreshToken != null) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
                         jwtExceptionHandler(response, "refreshToken 이 유효하지 않습니다. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);
-                        return;
+                        //로그 찍고 Authentication 날려주면 되겠네.
+//                        throw new AuthenticationException("하윙"); -> entrypoint에 걸리게 할 수 있음
+//                        return;  ->  doFilter 나간다.
                     }// else 로 해도되지않나? 일단 생각해보자
                     if(!fin) {
                         //리프레쉬 토큰이 유효하다면

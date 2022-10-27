@@ -6,6 +6,7 @@ import com.example.team7todo.dto.request.MemberRequestDto;
 import com.example.team7todo.dto.response.ResponseDto;
 import com.example.team7todo.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/signup")
-    public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
+    public ResponseEntity<?> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
         return memberService.createMember(memberRequestDto);
     }
 
