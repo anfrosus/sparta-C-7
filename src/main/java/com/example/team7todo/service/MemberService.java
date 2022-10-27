@@ -12,6 +12,8 @@ import com.example.team7todo.model.RefreshToken;
 import com.example.team7todo.repository.MemberRepository;
 import com.example.team7todo.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseDto createMember(MemberRequestDto memberRequestDto) {
+    public ResponseEntity createMember(MemberRequestDto memberRequestDto) {
         // 검증 로직 및 예외처리 작성
         //저장
         Member member = Member.builder()
@@ -41,15 +43,17 @@ public class MemberService {
         memberRepository.save(member);
 
         //success 의 리턴값이 new ResponseDto 임.
-        return ResponseDto.success(
-                MemberResponseDto.builder()
-                        .id(member.getId())
-                        .email(member.getEmail())
-                        .nickName(member.getNickname())
-                        .createdAt(member.getCreatedAt())
-                        .modifiedAt(member.getModifiedAt())
-                        .build()
-        );
+        return new ResponseEntity(
+//                MemberResponseDto.builder()
+//                        .id(member.getId())
+//                        .email(member.getEmail())
+//                        .nickName(member.getNickname())
+//                        .createdAt(member.getCreatedAt())
+//                        .modifiedAt(member.getModifiedAt())
+//                        .build()
+                member.getModifiedAt()
+                , HttpStatus.OK);
+//        );
     }
 
     @Transactional
